@@ -19,8 +19,18 @@ grad = zeros(size(theta));
 
 
 
+h = sigmoid(X * theta);
 
+inner = -1 * y .* log(h) - (1 - y) .* log(1 - h);
+J_1 = (1/m) * inner(1);
+reg_J = (1/m) * sum(inner(2:size(inner))) + lambda/(2 * m) * sum(theta(2:size(theta)).^2);
 
+inner_grad = h - y; 
+grad_1 = (1/m) * X(:, 1)' * inner_grad;
+reg_grad = (1/m) * X(:, 2:size(X,2))' * inner_grad + (lambda/m)* theta(2:size(theta));
+
+J = J_1 + reg_J;
+grad = [grad_1; reg_grad];
 
 % =============================================================
 

@@ -12,12 +12,12 @@ figure; hold on;
 %               examples and 'ko' for the negative examples.
 %
 
+pos_index = find(y==1);
+neg_index = find(y==0);
 
-
-
-
-
-
+% Skip index 1
+plot(X(pos_index, 2), X(pos_index, 3), "k+");
+plot(X(neg_index, 2), X(neg_index, 3), "ko");
 
 
 % =========================================================================

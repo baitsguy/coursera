@@ -24,6 +24,9 @@ h = sigmoid(X * theta);
 inner = -1 * y .* log(h) - (1 - y) .* log(1 - h);
 J = (1/m) * sum(inner);
 
+inner_grad = X' * (h - y);
+grad = (1/m) * inner_grad;
+
 % =============================================================
 
 end

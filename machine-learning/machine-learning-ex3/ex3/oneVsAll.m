@@ -6,13 +6,14 @@ function [all_theta] = oneVsAll(X, y, num_labels, lambda)
 %   logistic regression classifiers and returns each of these classifiers
 %   in a matrix all_theta, where the i-th row of all_theta corresponds 
 %   to the classifier for label i
-
+whos
 % Some useful variables
 m = size(X, 1);
 n = size(X, 2);
 
 % You need to return the following variables correctly 
 all_theta = zeros(num_labels, n + 1);
+cost = zeros(num_labels);
 
 % Add ones to the X data matrix
 X = [ones(m, 1) X];
@@ -49,16 +50,16 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
+options = optimset('GradObj', 'on', 'MaxIter', 50);
+outputs = zeros(m, n + 1);
+theta = all_theta';
+for c = 1:num_labels
+    c
+    outputs(:, c) = (y == c);
+    [theta(:,c),dont_care] = fminunc(@(t)(lrCostFunction(t, X, outputs(:,c), 0.1)), theta(:,c), options);
+end
 
-
-
-
-
-
-
-
-
-
+all_theta = theta';
 
 % =========================================================================
 

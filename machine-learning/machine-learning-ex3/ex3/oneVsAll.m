@@ -54,7 +54,6 @@ options = optimset('GradObj', 'on', 'MaxIter', 50);
 outputs = zeros(m, n + 1);
 theta = all_theta';
 for c = 1:num_labels
-    c
     outputs(:, c) = (y == c);
     [theta(:,c),dont_care] = fminunc(@(t)(lrCostFunction(t, X, outputs(:,c), 0.1)), theta(:,c), options);
 end

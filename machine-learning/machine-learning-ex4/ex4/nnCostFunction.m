@@ -69,7 +69,8 @@ rolled_y = zeros(m, num_labels);
 for c = 1:m
     rolled_y(c, y(c)) = 1;
 end
-a_2 = sigmoid(X * Theta1');
+z_2 = X * Theta1';
+a_2 = sigmoid(z_2);
 a_2 = [ones(m, 1) a_2];
 a_3 = sigmoid(a_2 * Theta2');
 inner = -1 * rolled_y .* log(a_3) - (1 - rolled_y) .* log(1 - a_3);
@@ -79,12 +80,30 @@ reg = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:size(Theta1,2)).^2)) + sum(sum(T
 
 J = sum(sum(inner, 2)) / m + reg;
 
+% back prop
+
+for t = 1:m
+    a1 = X(t,:)';
+    z2 = Theta1 * a1;
+    a2 = [1; sigmoid(z2)];
+    
+    z3 = Theta2 * a2;
+    a3 = sigmoid(z3);
+
+    delta3 = a3 - rolled_y(t,:)';
+   
+    delta2 = Theta2' * delta3 .* [1; sigmoidGradient(z2)];
+    delta2 = delta2(2:end);
+    Theta1_grad = Theta1_grad + delta2 * a1';
+    Theta2_grad = Theta2_grad + delta3 * a2';
+end
+
 % -------------------------------------------------------------
 
 % =========================================================================
 
 % Unroll gradients
-grad = [Theta1_grad(:) ; Theta2_grad(:)];
+grad = [Theta1_grad(:) ; Theta2_grad(:)] / m;
 
 
 end

@@ -73,7 +73,11 @@ a_2 = sigmoid(X * Theta1');
 a_2 = [ones(m, 1) a_2];
 a_3 = sigmoid(a_2 * Theta2');
 inner = -1 * rolled_y .* log(a_3) - (1 - rolled_y) .* log(1 - a_3);
-J = sum(sum(inner, 2)) / m;
+
+% regularization
+reg = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:size(Theta1,2)).^2)) + sum(sum(Theta2(:, 2:size(Theta2,2)).^2)));
+
+J = sum(sum(inner, 2)) / m + reg;
 
 % -------------------------------------------------------------
 

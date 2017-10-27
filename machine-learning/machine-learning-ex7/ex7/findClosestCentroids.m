@@ -20,7 +20,17 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
+for i = 1:size(X,1)
+    distance = norm(X(i,:) - centroids(1,:));
+    idx(i) = 1;
+    for j = 1:K
+        c_distance = norm(X(i,:) - centroids(j,:));
+        if (distance > c_distance)
+            distance = c_distance;
+            idx(i) = j;
+        endif
+    end
+end
 
 
 

@@ -41,18 +41,18 @@ Theta_grad = zeros(size(Theta));
 %
 
 inner = (X * Theta' - Y) .* R;
-J = sum(sum(inner .^ 2)) / 2;
+J = sum(sum(inner .^ 2)) / 2 + lambda/2 * (sum(sum(Theta.^2)) + sum(sum(X.^2)));
 for i=1:size(X)
     idx = find(R(i, :)==1); % list of users who rated movie i
     Theta_tmp = Theta(idx, :);
     Y_tmp = Y(i, idx);
-    X_grad(i,:) = (X(i, :) * Theta_tmp' - Y_tmp) * Theta_tmp;
+    X_grad(i,:) = (X(i, :) * Theta_tmp' - Y_tmp) * Theta_tmp + lambda * X(i,:);
 end
 for i=1:size(Theta)
     idx = find(R(:, i)==1); % list of movies rated by user i
     X_tmp = X(idx, :);
     Y_tmp = Y(idx, i);
-    Theta_grad(i,:) = (X_tmp * Theta(i, :)' - Y_tmp)' * X_tmp;
+    Theta_grad(i,:) = (X_tmp * Theta(i, :)' - Y_tmp)' * X_tmp + lambda * Theta(i,:);
 end
 
 
